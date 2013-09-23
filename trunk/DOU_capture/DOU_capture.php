@@ -20,7 +20,7 @@
 */
 
 $hora_agora = time ();
-$hora_inicio = mktime (0, 0, 0, 1, 1, 1998);
+$hora_inicio = mktime (0, 0, 0, 1, 1, 1995);
 $pasta_base = dirname (__FILE__);
 $temp_dir = $pasta_base . "/.tmp";
 define ('MIMETYPE_PDF', "application/pdf");
@@ -105,7 +105,7 @@ function constroi_dou_secao ($data, $secao) {
         }
     }
     aviso ("Mesclando arquivos PDF...");
-    executa_comando ("pdfjoin --outfile " . escapeshellarg ($pasta_base . "/dou_" . $data_real['file'] . "_s" . $secao . ".pdf") . " " . $pdfjoin_args);
+    executa_comando ("pdfjoin --no-tidy --outfile " . escapeshellarg ($pasta_base . "/dou_" . $data_real['file'] . "_s" . $secao . ".pdf") . " " . $pdfjoin_args);
 }
 
 function converte_pdf_para_ps ($entrada, $saida) {
