@@ -276,14 +276,14 @@ function le_arquivo_e_baixa_se_nao_tem ($arquivo, $url_download = false, $url_re
 function obtem_frameset ($data_public, $secao, $pagina, $totalarquivos = false, $ignorecache = false) {
     valida_numero_secao ($secao);
     $data_real = formatos_data ($data_public);
-    $url_dou = "http://www.in.gov.br/imprensa/visualiza/index.jsp?data=" . $data_real['human'] . "&jornal=" . $secao . "&pagina=" . $pagina;
+    $url_dou = "http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=" . $data_real['human'] . "&jornal=" . $secao . "&pagina=" . $pagina;
     if ($totalarquivos !== false) {
         $url_dou .= "&totalArquivos=" . $totalarquivos;
     }
     $dados = le_arquivo_e_baixa_se_nao_tem (
         "dou_" . $data_real['file'] . "_s" . $secao . "_index_" . $pagina . ".htm",
         $url_dou,
-        "http://www.in.gov.br/imprensa/leiturajornal/leitura_jornal.jsp",
+        "http://pesquisa.in.gov.br/imprensa/core/consulta2.action",
         MIMETYPE_HTML,
         $ignorecache,
         true
@@ -299,12 +299,12 @@ function detecta_numero_paginas ($data_public, $secao) {
     $data_real = formatos_data ($data_public);
     echo ("Detectando numero de paginas da secao " . $secao . " do DOU publicado em " . $data_real['human'] . "...");
     $index_jsp = obtem_frameset ($data_public, $secao, 1, false, true);
-    if (preg_match ("/<frame\\s+name=['\"]?controlador['\"]?\\s+src=['\"]?http:\\/\\/www.in.gov.br\\/visualiza\\/navegaJornal\\.jsp\\?([^\\s]+)['\"]?\\s+scrolling=['\"]?no['\"]?\\s*\\/?>/is", $index_jsp['dados'], $matr)) {
-        $ultch = substr ($matr[1], -1);
+    if (preg_match ("/<frame\\s+name=['\"]?controlador['\"]?\\s+src=['\"]?\\.\\.\\/visualiza\\/navegaJornal(|Sumario)\\.jsp\\?([^\\s]+)['\"]?\\s+scrolling=['\"]?no['\"]?\\s*\\/?>/is", $index_jsp['dados'], $matr)) {
+        $ultch = substr ($matr[2], -1);
         if ($ultch == "'" || $ultch == '"') {
-            $matr[1] = substr ($matr[1], 0, strlen ($matr[1]) - 1);
+            $matr[2] = substr ($matr[2], 0, strlen ($matr[2]) - 1);
         }
-        $qstr = explode ("&", $matr[1]);
+        $qstr = explode ("&", $matr[2]);
         foreach ($qstr as $item) {
             if (substr ($item, 0, 14) == "totalArquivos=") {
                 $tot_arq = intval (substr ($item, 14), 10);
