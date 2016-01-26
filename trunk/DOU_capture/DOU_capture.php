@@ -1,4 +1,4 @@
-#!/usr/bin/php5
+#!/usr/bin/php
 <?php
 
 /*
@@ -63,6 +63,10 @@ function constroi_dou_secao ($data, $secao) {
             $ultch = substr ($matr[1], -1);
             if ($ultch == "'" || $ultch == '"') {
                 $matr[1] = substr ($matr[1], 0, strlen ($matr[1]) - 1);
+            }
+            # Nao eh uma maneira elegante de resolver URL's relativas, mas... Funciona.
+            if (substr ($matr[1], 0, 6) == "../../") {
+                $matr[1] = "http://pesquisa.in.gov.br/imprensa/" . substr ($matr[1], 6);
             }
             $comeu = false;
             $arq_pdf = "dou_" . $data_real['file'] . "_s" . $secao . "_doupdf_" . $i;
