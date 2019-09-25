@@ -47,7 +47,6 @@ echo ("\nConcluido.\n");
 
 function constroi_dou_secao ($data, $secao) {
     global $temp_dir, $pasta_base;
-    valida_numero_secao ($secao);
     $data_real = formatos_data ($data);
     $numpags = detecta_numero_paginas ($data, $secao);
     $pdfjoin_args = "";
@@ -147,7 +146,6 @@ function testa_mimetype ($fpath, $mime = false) {
 
 function baixa_dou_secao ($data, $secao, $naoconstroi = false) {
     global $pasta_base;
-    valida_numero_secao ($secao);
     $data_real = formatos_data ($data);
     $fpath = $pasta_base . "/dou_" . $data_real['file'] . "_s" . $secao . ".pdf";
     if (file_exists ($fpath)) {
@@ -171,13 +169,6 @@ function fatal ($msg) {
 
 function aviso ($msg) {
     echo ("\n ---- " . $msg . " ----\n");
-}
-
-function valida_numero_secao ($secao) {
-    $sect = (int) $secao;
-    if ($sect !== 1 && $sect !== 2 && $sect !== 3 && $sect !== 1000 && $sect !== 2000 && $sect !== 3000) {
-        fatal ("Numero de secao invalido: '" . $secao . "'!");
-    }
 }
 
 function formatos_data ($data) {
@@ -278,7 +269,6 @@ function le_arquivo_e_baixa_se_nao_tem ($arquivo, $url_download = false, $url_re
 }
 
 function obtem_frameset ($data_public, $secao, $pagina, $totalarquivos = false, $ignorecache = false) {
-    valida_numero_secao ($secao);
     $data_real = formatos_data ($data_public);
     $url_dou = "http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=" . $data_real['human'] . "&jornal=" . $secao . "&pagina=" . $pagina;
     if ($totalarquivos !== false) {
@@ -299,7 +289,6 @@ function obtem_frameset ($data_public, $secao, $pagina, $totalarquivos = false, 
 }
 
 function detecta_numero_paginas ($data_public, $secao) {
-    valida_numero_secao ($secao);
     $data_real = formatos_data ($data_public);
     echo ("Detectando numero de paginas da secao " . $secao . " do DOU publicado em " . $data_real['human'] . "...");
     $index_jsp = obtem_frameset ($data_public, $secao, 1, false, true);
