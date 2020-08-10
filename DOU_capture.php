@@ -108,7 +108,7 @@ function constroi_dou_secao ($data, $secao) {
         }
     }
     aviso ("Mesclando arquivos PDF...");
-    executa_comando ("pdfjoin --no-tidy --outfile " . escapeshellarg ($pasta_base . "/dou_" . $data_real['file'] . "_s" . $secao . ".pdf") . " " . $pdfjoin_args);
+    executa_comando ("pdftk " . $pdfjoin_args . " cat output " . escapeshellarg ($pasta_base . "/dou_" . $data_real['file'] . "_s" . $secao . ".pdf"));
 }
 
 function converte_pdf_para_ps ($entrada, $saida) {
